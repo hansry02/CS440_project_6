@@ -10,7 +10,7 @@ import simpledb.record.*;
  *
  * @author rynehanson
  */
-public class AntijoinScan implements Scan {
+public class SemijoinScan implements Scan {
    private Scan prod;
    private Predicate pred;
    
@@ -20,7 +20,7 @@ public class AntijoinScan implements Scan {
     * @param s the scan of the underlying query
     * @param pred the selection predicate
     */
-   public AntijoinScan(Scan s1, Scan s2, Scan s3, Predicate pred) {
+   public SemijoinScan(Scan s1, Scan s2, Predicate pred) {
       this.prod = new ProductScan(s1, s2);
       this.pred = pred;
       s1.next();

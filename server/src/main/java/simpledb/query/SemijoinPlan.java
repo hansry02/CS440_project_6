@@ -7,7 +7,7 @@ import simpledb.record.Schema;
  * @author rynehanson
  */
 
-public class JoinPlan implements Plan {
+public class SemijoinPlan implements Plan {
    private Plan p1, p2;
    private Predicate pred;
    private Schema schema = new Schema();
@@ -18,7 +18,7 @@ public class JoinPlan implements Plan {
     * @param p1 the left-hand subquery
     * @param p2 the right-hand subquery
     */
-   public JoinPlan(Plan p1, Plan p2, Predicate pred) {
+   public SemijoinPlan(Plan p1, Plan p2, Predicate pred) {
       this.p1 = p1;
       this.p2 = p2;
       this.pred = pred;
@@ -33,7 +33,7 @@ public class JoinPlan implements Plan {
    public Scan open() {
       Scan s1 = p1.open();
       Scan s2 = p2.open();
-      return new JoinScan(s1, s2, this.pred);
+      return new SemijoinScan(s1, s2, this.pred);
    }
    
    /**
@@ -43,7 +43,7 @@ public class JoinPlan implements Plan {
     * @see simpledb.query.Plan#blocksAccessed()
     */
    public int blocksAccessed() {
-      return p1.blocksAccessed() + (p1.recordsOutput() * p2.blocksAccessed());
+      return (p1.recordsOutput() * p2.blocksAccessed());
    }
    
    /**
